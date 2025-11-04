@@ -1,0 +1,36 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: inventory-service
+  
+  r2dbc:
+    url: r2dbc:postgresql://postgres-inventory:5432/inventory_db
+    username: inventory_user
+    password: inventory_pass
+    pool:
+      initial-size: 10
+      max-size: 20
+      max-idle-time: 30m
+      validation-query: SELECT 1
+  
+  # Configuración de logging
+logging:
+  level:
+    root: INFO
+    com.biblioteca.inventory: DEBUG
+    org.springframework.r2dbc: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+# Actuator endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+

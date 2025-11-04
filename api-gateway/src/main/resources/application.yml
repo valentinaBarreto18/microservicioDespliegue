@@ -1,0 +1,73 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  
+  cloud:
+    gateway:
+      # Configuración global de CORS
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origins: "*"
+            allowed-methods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowed-headers: "*"
+            allow-credentials: false
+      
+      # Definición de rutas
+      routes:
+        # Rutas para Inventory Service
+        - id: inventory-service
+          uri: http://inventory-service:8081
+          predicates:
+            - Path=/api/books/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: inventoryCircuitBreaker
+                fallbackUri: forward:/fallback/inventory
+        
+        # Rutas para Loan Service
+        - id: loan-service
+          uri: http://loan-service:8082
+          predicates:
+            - Path=/api/loans/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: loanCircuitBreaker
+                fallbackUri: forward:/fallback/loan
+
+      # Configuración de descubrimiento de rutas
+      discovery:
+        locator:
+          enabled: false
+
+# Configuración de logging
+logging:
+  level:
+    root: INFO
+    com.biblioteca.gateway: DEBUG
+    org.springframework.cloud.gateway: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+# Actuator endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,gateway
+  endpoint:
+    health:
+      show-details: always
+    gateway:
+      enabled: true
+

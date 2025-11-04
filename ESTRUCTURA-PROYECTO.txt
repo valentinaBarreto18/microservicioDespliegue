@@ -1,0 +1,240 @@
+┌─────────────────────────────────────────────────────────────────────────┐
+│          SISTEMA DE MICROSERVICIOS PARA BIBLIOTECA                      │
+│         Spring Boot + Programación Reactiva + PostgreSQL                │
+└─────────────────────────────────────────────────────────────────────────┘
+
+ESTRUCTURA COMPLETA DEL PROYECTO:
+═══════════════════════════════════════════════════════════════════════════
+
+biblioteca-microservices/
+│
+├── 📋 pom.xml                          ← POM Parent del proyecto multi-módulo
+│
+├── 🐳 docker-compose.yml               ← Orquestación completa (3 servicios + 2 BD)
+├── 📝 .dockerignore
+├── 📝 .gitignore
+│
+├── 📚 README.md                        ← Documentación completa
+├── 🚀 INICIO-RAPIDO.md                 ← Guía de inicio rápido
+├── 📡 EJEMPLOS-API.md                  ← Ejemplos de todas las APIs
+├── 📂 ESTRUCTURA-PROYECTO.txt          ← Este archivo
+│
+├── 🗄️ database/                        ← Scripts de base de datos PostgreSQL
+│   ├── init-inventory-db.sql          ← Schema + datos para inventory_db
+│   └── init-loan-db.sql               ← Schema + datos para loan_db
+│
+├── 📮 postman/                         ← Colección de Postman completa
+│   └── Biblioteca-Microservices.postman_collection.json
+│
+├── 🌐 api-gateway/                     ← API GATEWAY (Puerto 8080)
+│   ├── 📋 pom.xml
+│   ├── 🐳 Dockerfile
+│   └── src/main/
+│       ├── java/com/biblioteca/gateway/
+│       │   ├── ApiGatewayApplication.java
+│       │   └── controller/
+│       │       └── FallbackController.java
+│       └── resources/
+│           └── application.yml        ← Configuración de rutas y circuit breaker
+│
+├── 📦 inventory-service/               ← SERVICIO DE INVENTARIO (Puerto 8081)
+│   ├── 📋 pom.xml                     ← Dependencias: WebFlux, R2DBC, PostgreSQL
+│   ├── 🐳 Dockerfile
+│   └── src/main/
+│       ├── java/com/biblioteca/inventory/
+│       │   ├── InventoryServiceApplication.java
+│       │   │
+│       │   ├── model/
+│       │   │   └── Book.java          ← Record para entidad Book
+│       │   │
+│       │   ├── dto/
+│       │   │   ├── BookRequest.java   ← Record para peticiones
+│       │   │   └── BookResponse.java  ← Record para respuestas
+│       │   │
+│       │   ├── repository/
+│       │   │   └── BookRepository.java ← R2dbcRepository reactivo
+│       │   │
+│       │   ├── service/
+│       │   │   └── BookService.java   ← Lógica de negocio (Mono/Flux)
+│       │   │
+│       │   └── controller/
+│       │       └── BookController.java ← REST Controller reactivo
+│       │
+│       └── resources/
+│           ├── application.yml        ← Config R2DBC + PostgreSQL
+│           └── schema.sql             ← Schema de tabla books
+│
+├── 📖 loan-service/                    ← SERVICIO DE PRÉSTAMOS (Puerto 8082)
+│   ├── 📋 pom.xml                     ← Dependencias: WebFlux, R2DBC, PostgreSQL
+│   ├── 🐳 Dockerfile
+│   └── src/main/
+│       ├── java/com/biblioteca/loan/
+│       │   ├── LoanServiceApplication.java
+│       │   │
+│       │   ├── model/
+│       │   │   ├── Loan.java          ← Record para entidad Loan
+│       │   │   └── LoanStatus.java    ← Enum (ACTIVE, RETURNED, OVERDUE, CANCELLED)
+│       │   │
+│       │   ├── dto/
+│       │   │   ├── LoanRequest.java   ← Record para peticiones
+│       │   │   └── LoanResponse.java  ← Record para respuestas
+│       │   │
+│       │   ├── repository/
+│       │   │   └── LoanRepository.java ← R2dbcRepository reactivo
+│       │   │
+│       │   ├── service/
+│       │   │   └── LoanService.java   ← Lógica de negocio + WebClient
+│       │   │
+│       │   ├── controller/
+│       │   │   └── LoanController.java ← REST Controller reactivo
+│       │   │
+│       │   └── config/
+│       │       └── WebClientConfig.java ← Config para comunicación entre servicios
+│       │
+│       └── resources/
+│           ├── application.yml        ← Config R2DBC + PostgreSQL
+│           └── schema.sql             ← Schema de tabla loans
+
+═══════════════════════════════════════════════════════════════════════════
+TECNOLOGÍAS IMPLEMENTADAS:
+═══════════════════════════════════════════════════════════════════════════
+
+✅ Java 17
+✅ Spring Boot 3.2.0
+✅ Spring WebFlux (Programación Reactiva)
+✅ Spring Cloud Gateway
+✅ R2DBC PostgreSQL (Acceso reactivo a base de datos)
+✅ PostgreSQL 15
+✅ Project Reactor (Mono y Flux)
+✅ Java Records (para DTOs y modelos)
+✅ Bean Validation
+✅ Lombok
+✅ Spring Boot Actuator (Health Checks)
+✅ Docker & Docker Compose
+✅ Maven (proyecto multi-módulo)
+
+═══════════════════════════════════════════════════════════════════════════
+BASE DE DATOS POSTGRESQL:
+═══════════════════════════════════════════════════════════════════════════
+
+📊 DATABASE: inventory_db (Puerto 5432)
+   └── TABLE: books
+       ├── id (BIGSERIAL PRIMARY KEY)
+       ├── isbn (VARCHAR UNIQUE)
+       ├── title, author, publisher
+       ├── publication_year, category
+       ├── total_copies, available_copies
+       ├── description
+       └── timestamps
+       
+       📦 10 libros de ejemplo precargados
+       🔍 Índices en: isbn, author, title, category, available_copies
+
+📊 DATABASE: loan_db (Puerto 5433)
+   └── TABLE: loans
+       ├── id (BIGSERIAL PRIMARY KEY)
+       ├── book_id (BIGINT)
+       ├── user_email, user_name
+       ├── loan_date, due_date, return_date
+       ├── status (ENUM: ACTIVE, RETURNED, OVERDUE, CANCELLED)
+       ├── notes
+       └── timestamps
+       
+       📦 6 préstamos de ejemplo precargados
+       🔍 Índices en: book_id, user_email, status, due_date
+
+═══════════════════════════════════════════════════════════════════════════
+ARQUITECTURA DE MICROSERVICIOS:
+═══════════════════════════════════════════════════════════════════════════
+
+                         ┌─────────────────┐
+                         │   POSTMAN /     │
+                         │   CLIENTE HTTP  │
+                         └────────┬────────┘
+                                  │
+                                  │ http://localhost:8080
+                                  │
+                         ┌────────▼────────┐
+                         │  API GATEWAY    │
+                         │   (Puerto 8080) │
+                         │  Spring Cloud   │
+                         │    Gateway      │
+                         └────┬──────┬─────┘
+                              │      │
+                    ┌─────────┘      └──────────┐
+                    │                           │
+          ┌─────────▼──────────┐    ┌──────────▼─────────┐
+          │ INVENTORY SERVICE  │    │   LOAN SERVICE     │
+          │   (Puerto 8081)    │◄───┤   (Puerto 8082)    │
+          │  Gestión Libros    │    │ Gestión Préstamos  │
+          │    Spring WebFlux  │    │   Spring WebFlux   │
+          └─────────┬──────────┘    └──────────┬─────────┘
+                    │                          │
+                    │ R2DBC                    │ R2DBC
+                    │                          │
+          ┌─────────▼──────────┐    ┌──────────▼─────────┐
+          │  PostgreSQL        │    │  PostgreSQL        │
+          │  inventory_db      │    │  loan_db           │
+          │  (Puerto 5432)     │    │  (Puerto 5433)     │
+          └────────────────────┘    └────────────────────┘
+
+═══════════════════════════════════════════════════════════════════════════
+ENDPOINTS DISPONIBLES (vía API Gateway en puerto 8080):
+═══════════════════════════════════════════════════════════════════════════
+
+📚 INVENTORY SERVICE - /api/books:
+   GET    /api/books                           ← Obtener todos los libros
+   GET    /api/books/{id}                      ← Obtener libro por ID
+   GET    /api/books/isbn/{isbn}               ← Obtener por ISBN
+   GET    /api/books/search/author?name=...    ← Buscar por autor
+   GET    /api/books/search/title?name=...     ← Buscar por título
+   GET    /api/books/category/{category}       ← Filtrar por categoría
+   GET    /api/books/available                 ← Solo disponibles
+   GET    /api/books/{id}/availability         ← Verificar disponibilidad
+   POST   /api/books                           ← Crear libro
+   PUT    /api/books/{id}                      ← Actualizar libro
+   DELETE /api/books/{id}                      ← Eliminar libro
+   POST   /api/books/{id}/decrement            ← Decrementar copias
+   POST   /api/books/{id}/increment            ← Incrementar copias
+
+📖 LOAN SERVICE - /api/loans:
+   GET    /api/loans                           ← Obtener todos
+   GET    /api/loans/{id}                      ← Obtener por ID
+   GET    /api/loans/user/{email}              ← Préstamos de usuario
+   GET    /api/loans/user/{email}/active       ← Préstamos activos de usuario
+   GET    /api/loans/book/{bookId}             ← Préstamos de un libro
+   GET    /api/loans/status/{status}           ← Filtrar por estado
+   GET    /api/loans/overdue                   ← Solo vencidos
+   POST   /api/loans                           ← Crear préstamo
+   POST   /api/loans/{id}/return               ← Devolver libro
+   POST   /api/loans/{id}/renew?newDueDate=... ← Renovar préstamo
+   POST   /api/loans/{id}/cancel               ← Cancelar préstamo
+   POST   /api/loans/update-overdue            ← Actualizar vencidos
+
+═══════════════════════════════════════════════════════════════════════════
+CARACTERÍSTICAS REACTIVAS:
+═══════════════════════════════════════════════════════════════════════════
+
+✅ Mono<T>         - Para operaciones que retornan 0 o 1 elemento
+✅ Flux<T>         - Para operaciones que retornan 0..N elementos
+✅ R2DBC           - Acceso reactivo no bloqueante a PostgreSQL
+✅ WebFlux         - Framework web reactivo
+✅ WebClient       - Cliente HTTP reactivo (comunicación entre servicios)
+✅ Backpressure    - Control de flujo de datos
+✅ Non-blocking IO - Alto rendimiento y escalabilidad
+
+═══════════════════════════════════════════════════════════════════════════
+CÓMO EJECUTAR:
+═══════════════════════════════════════════════════════════════════════════
+
+1️⃣  docker-compose up --build
+2️⃣  Esperar 2-3 minutos
+3️⃣  Importar colección de Postman
+4️⃣  Probar endpoints en http://localhost:8080
+
+Ver más detalles en INICIO-RAPIDO.md
+
+═══════════════════════════════════════════════════════════════════════════
+ARCHIVOS TOTALES CREADOS: 35+
+═══════════════════════════════════════════════════════════════════════════
+

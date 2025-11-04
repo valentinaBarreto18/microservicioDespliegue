@@ -1,0 +1,501 @@
+{
+	"info": {
+		"_postman_id": "biblioteca-microservices-001",
+		"name": "Biblioteca Microservices - API Gateway",
+		"description": "Colección completa para probar los microservicios de Biblioteca a través del API Gateway",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Inventory Service",
+			"item": [
+				{
+					"name": "Obtener todos los libros",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/books",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "books"]
+						},
+						"description": "Obtiene la lista completa de libros en el inventario"
+					}
+				},
+				{
+					"name": "Obtener libro por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/books/1",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "books", "1"]
+						},
+						"description": "Obtiene un libro específico por su ID"
+					}
+				},
+				{
+					"name": "Obtener libro por ISBN",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/books/isbn/978-0-13-468599-1",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "books", "isbn", "978-0-13-468599-1"]
+						},
+						"description": "Busca un libro por su número ISBN"
+					}
+				},
+				{
+					"name": "Buscar libros por autor",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/books/search/author?name=Martin",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "books", "search", "author"],
+							"query": [
+								{
+									"key": "name",
+									"value": "Martin"
+								}
+							]
+						},
+						"description": "Busca libros por nombre del autor (búsqueda parcial)"
+					}
+				},
+				{
+					"name": "Buscar libros por título",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/books/search/title?name=Spring",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "books", "search", "title"],
+							"query": [
+								{
+									"key": "name",
+									"value": "Spring"
+								}
+							]
+						},
+						"description": "Busca libros por título (búsqueda parcial)"
+					}
+				},
+				{
+					"name": "Obtener libros por categoría",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/books/category/Programación",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "books", "category", "Programación"]
+						},
+						"description": "Obtiene libros de una categoría específica"
+					}
+				},
+				{
+					"name": "Obtener libros disponibles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/books/available",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "books", "available"]
+						},
+						"description": "Obtiene solo los libros que tienen copias disponibles"
+					}
+				},
+				{
+					"name": "Verificar disponibilidad de libro",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/books/1/availability",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "books", "1", "availability"]
+						},
+						"description": "Verifica si un libro específico está disponible"
+					}
+				},
+				{
+					"name": "Crear nuevo libro",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"isbn\": \"978-0-13-468599-9\",\n  \"title\": \"Test Driven Development\",\n  \"author\": \"Kent Beck\",\n  \"publisher\": \"Addison-Wesley\",\n  \"publicationYear\": 2002,\n  \"category\": \"Programación\",\n  \"totalCopies\": 3,\n  \"availableCopies\": 3,\n  \"description\": \"Desarrollo guiado por pruebas\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/books",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "books"]
+						},
+						"description": "Crea un nuevo libro en el inventario"
+					}
+				},
+				{
+					"name": "Actualizar libro",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"isbn\": \"978-0-13-468599-1\",\n  \"title\": \"Effective Java - Third Edition\",\n  \"author\": \"Joshua Bloch\",\n  \"publisher\": \"Addison-Wesley\",\n  \"publicationYear\": 2018,\n  \"category\": \"Programación\",\n  \"totalCopies\": 6,\n  \"availableCopies\": 6,\n  \"description\": \"Guía completa de mejores prácticas en Java - Actualizado\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/books/1",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "books", "1"]
+						},
+						"description": "Actualiza la información de un libro existente"
+					}
+				},
+				{
+					"name": "Eliminar libro",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/books/11",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "books", "11"]
+						},
+						"description": "Elimina un libro del inventario"
+					}
+				},
+				{
+					"name": "Decrementar copias (préstamo)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/books/1/decrement",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "books", "1", "decrement"]
+						},
+						"description": "Decrementa las copias disponibles (cuando se presta un libro)"
+					}
+				},
+				{
+					"name": "Incrementar copias (devolución)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/books/1/increment",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "books", "1", "increment"]
+						},
+						"description": "Incrementa las copias disponibles (cuando se devuelve un libro)"
+					}
+				}
+			],
+			"description": "Endpoints del servicio de inventario de libros"
+		},
+		{
+			"name": "Loan Service",
+			"item": [
+				{
+					"name": "Obtener todos los préstamos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/loans",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "loans"]
+						},
+						"description": "Obtiene la lista completa de préstamos"
+					}
+				},
+				{
+					"name": "Obtener préstamo por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/loans/1",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "loans", "1"]
+						},
+						"description": "Obtiene un préstamo específico por su ID"
+					}
+				},
+				{
+					"name": "Obtener préstamos por usuario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/loans/user/juan.perez@example.com",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "loans", "user", "juan.perez@example.com"]
+						},
+						"description": "Obtiene todos los préstamos de un usuario específico"
+					}
+				},
+				{
+					"name": "Obtener préstamos activos por usuario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/loans/user/juan.perez@example.com/active",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "loans", "user", "juan.perez@example.com", "active"]
+						},
+						"description": "Obtiene los préstamos activos de un usuario"
+					}
+				},
+				{
+					"name": "Obtener préstamos por libro",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/loans/book/1",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "loans", "book", "1"]
+						},
+						"description": "Obtiene el historial de préstamos de un libro"
+					}
+				},
+				{
+					"name": "Obtener préstamos por estado",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/loans/status/ACTIVE",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "loans", "status", "ACTIVE"]
+						},
+						"description": "Obtiene préstamos filtrados por estado (ACTIVE, RETURNED, OVERDUE, CANCELLED)"
+					}
+				},
+				{
+					"name": "Obtener préstamos vencidos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/loans/overdue",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "loans", "overdue"]
+						},
+						"description": "Obtiene todos los préstamos vencidos"
+					}
+				},
+				{
+					"name": "Crear nuevo préstamo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"bookId\": 7,\n  \"userEmail\": \"lucia.rodriguez@example.com\",\n  \"userName\": \"Lucía Rodríguez\",\n  \"dueDate\": \"2025-11-18\",\n  \"notes\": \"Préstamo de prueba desde Postman\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/loans",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "loans"]
+						},
+						"description": "Crea un nuevo préstamo de libro"
+					}
+				},
+				{
+					"name": "Devolver libro",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/loans/1/return",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "loans", "1", "return"]
+						},
+						"description": "Marca un préstamo como devuelto"
+					}
+				},
+				{
+					"name": "Renovar préstamo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/loans/2/renew?newDueDate=2025-11-25",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "loans", "2", "renew"],
+							"query": [
+								{
+									"key": "newDueDate",
+									"value": "2025-11-25"
+								}
+							]
+						},
+						"description": "Extiende la fecha de vencimiento de un préstamo"
+					}
+				},
+				{
+					"name": "Cancelar préstamo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/loans/4/cancel",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "loans", "4", "cancel"]
+						},
+						"description": "Cancela un préstamo activo"
+					}
+				},
+				{
+					"name": "Actualizar préstamos vencidos",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/loans/update-overdue",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "loans", "update-overdue"]
+						},
+						"description": "Actualiza el estado de todos los préstamos vencidos"
+					}
+				}
+			],
+			"description": "Endpoints del servicio de préstamos"
+		},
+		{
+			"name": "Health Checks",
+			"item": [
+				{
+					"name": "Health - API Gateway",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/actuator/health",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["actuator", "health"]
+						},
+						"description": "Verifica el estado de salud del API Gateway"
+					}
+				},
+				{
+					"name": "Health - Inventory Service",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/actuator/health",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8081",
+							"path": ["actuator", "health"]
+						},
+						"description": "Verifica el estado de salud del servicio de inventario (directo)"
+					}
+				},
+				{
+					"name": "Health - Loan Service",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/actuator/health",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8082",
+							"path": ["actuator", "health"]
+						},
+						"description": "Verifica el estado de salud del servicio de préstamos (directo)"
+					}
+				}
+			],
+			"description": "Endpoints de verificación de salud de los servicios"
+		}
+	],
+	"variable": [
+		{
+			"key": "gateway_url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}
+

@@ -1,0 +1,36 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: loan-service
+  
+  r2dbc:
+    url: r2dbc:postgresql://postgres-loan:5432/loan_db
+    username: loan_user
+    password: loan_pass
+    pool:
+      initial-size: 10
+      max-size: 20
+      max-idle-time: 30m
+      validation-query: SELECT 1
+
+# Configuración de logging
+logging:
+  level:
+    root: INFO
+    com.biblioteca.loan: DEBUG
+    org.springframework.r2dbc: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+# Actuator endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+

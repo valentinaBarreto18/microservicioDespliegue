@@ -1,0 +1,107 @@
+# Configuración de Render para Sistema de Biblioteca
+# Este archivo define toda la infraestructura necesaria
+
+databases:
+  # Base de datos para Inventory Service
+  - name: biblioteca-inventory-db
+    databaseName: inventory_db
+    user: inventory_user
+    plan: free
+    region: oregon
+    postgresMajorVersion: 15
+
+  # Base de datos para Loan Service
+  - name: biblioteca-loan-db
+    databaseName: loan_db
+    user: loan_user
+    plan: free
+    region: oregon
+    postgresMajorVersion: 15
+
+services:
+  # Inventory Service
+  - type: web
+    name: biblioteca-inventory-service
+    runtime: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./inventory-service/Dockerfile
+    dockerContext: .
+    envVars:
+      - key: SERVER_PORT
+        value: 8081
+      - key: SPRING_R2DBC_URL
+        fromDatabase:
+          name: biblioteca-inventory-db
+          property: connectionString
+      - key: SPRING_R2DBC_USERNAME
+        fromDatabase:
+          name: biblioteca-inventory-db
+          property: user
+      - key: SPRING_R2DBC_PASSWORD
+        fromDatabase:
+          name: biblioteca-inventory-db
+          property: password
+      - key: DATABASE_URL
+        fromDatabase:
+          name: biblioteca-inventory-db
+          property: connectionString
+    healthCheckPath: /actuator/health
+
+  # Loan Service
+  - type: web
+    name: biblioteca-loan-service
+    runtime: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./loan-service/Dockerfile
+    dockerContext: .
+    envVars:
+      - key: SERVER_PORT
+        value: 8082
+      - key: SPRING_R2DBC_URL
+        fromDatabase:
+          name: biblioteca-loan-db
+          property: connectionString
+      - key: SPRING_R2DBC_USERNAME
+        fromDatabase:
+          name: biblioteca-loan-db
+          property: user
+      - key: SPRING_R2DBC_PASSWORD
+        fromDatabase:
+          name: biblioteca-loan-db
+          property: password
+      - key: DATABASE_URL
+        fromDatabase:
+          name: biblioteca-loan-db
+          property: connectionString
+      - key: INVENTORY_SERVICE_URL
+        fromService:
+          type: web
+          name: biblioteca-inventory-service
+          property: host
+    healthCheckPath: /actuator/health
+
+  # API Gateway
+  - type: web
+    name: biblioteca-api-gateway
+    runtime: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./api-gateway/Dockerfile
+    dockerContext: .
+    envVars:
+      - key: SERVER_PORT
+        value: 8080
+      - key: INVENTORY_SERVICE_URL
+        fromService:
+          type: web
+          name: biblioteca-inventory-service
+          property: host
+      - key: LOAN_SERVICE_URL
+        fromService:
+          type: web
+          name: biblioteca-loan-service
+          property: host
+    healthCheckPath: /actuator/health
+

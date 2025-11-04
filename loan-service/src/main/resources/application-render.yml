@@ -1,0 +1,39 @@
+server:
+  port: ${SERVER_PORT:8082}
+
+spring:
+  application:
+    name: loan-service
+  
+  r2dbc:
+    url: ${SPRING_R2DBC_URL:r2dbc:postgresql://localhost:5432/loan_db}
+    username: ${SPRING_R2DBC_USERNAME:loan_user}
+    password: ${SPRING_R2DBC_PASSWORD:loan_pass}
+    pool:
+      initial-size: 5
+      max-size: 10
+      max-idle-time: 30m
+      validation-query: SELECT 1
+
+logging:
+  level:
+    root: INFO
+    com.biblioteca.loan: INFO
+    org.springframework.r2dbc: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+# URL del inventory service en Render
+inventory:
+  service:
+    url: ${INVENTORY_SERVICE_URL:http://localhost:8081}
+
