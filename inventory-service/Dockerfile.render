@@ -1,0 +1,24 @@
+# Dockerfile optimizado para Render
+# Usa una sola etapa para reducir tiempo de build
+
+FROM maven:3.9.5-eclipse-temurin-17
+
+# Establecer directorio de trabajo
+WORKDIR /app
+
+# Copiar archivos de configuración de Maven
+COPY pom.xml ./parent-pom.xml
+COPY inventory-service/pom.xml ./pom.xml
+
+# Copiar código fuente
+COPY inventory-service/src ./src
+
+# Compilar y ejecutar en un solo paso (para reducir capas)
+RUN mvn clean package -DskipTests
+
+# Exponer puerto
+EXPOSE 8081
+
+# Comando de inicio
+CMD ["java", "-jar", "/app/target/*.jar"]
+

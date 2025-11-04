@@ -6,9 +6,9 @@ spring:
     name: inventory-service
   
   r2dbc:
-    url: ${SPRING_R2DBC_URL:r2dbc:postgresql://localhost:5432/inventory_db}
-    username: ${SPRING_R2DBC_USERNAME:inventory_user}
-    password: ${SPRING_R2DBC_PASSWORD:inventory_pass}
+    url: r2dbc:postgresql://${DATABASE_HOST:localhost}:${DATABASE_PORT:5432}/${DATABASE_NAME:biblioteca_db}
+    username: ${SPRING_R2DBC_USERNAME:biblioteca_user}
+    password: ${SPRING_R2DBC_PASSWORD:biblioteca_pass}
     pool:
       initial-size: 5
       max-size: 10
