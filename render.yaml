@@ -100,14 +100,8 @@ services:
       - key: SPRING_PROFILES_ACTIVE
         value: render
       - key: INVENTORY_SERVICE_URL
-        fromService:
-          type: web
-          name: biblioteca-inventory-service
-          envVarKey: RENDER_EXTERNAL_URL
+        value: https://biblioteca-inventory-service.onrender.com
       - key: LOAN_SERVICE_URL
-        fromService:
-          type: web
-          name: biblioteca-loan-service
-          envVarKey: RENDER_EXTERNAL_URL
+        value: https://biblioteca-loan-service.onrender.com
     healthCheckPath: /actuator/health
 
