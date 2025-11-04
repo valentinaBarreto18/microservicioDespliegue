@@ -25,7 +25,7 @@ spring:
       routes:
         # Rutas para Inventory Service
         - id: inventory-service
-          uri: ${INVENTORY_SERVICE_URL:http://localhost:8081}
+          uri: ${INVENTORY_SERVICE_URL:http://inventory-service:8081}
           predicates:
             - Path=/api/books/**
           filters:
@@ -36,7 +36,7 @@ spring:
         
         # Rutas para Loan Service
         - id: loan-service
-          uri: ${LOAN_SERVICE_URL:http://localhost:8082}
+          uri: ${LOAN_SERVICE_URL:http://loan-service:8082}
           predicates:
             - Path=/api/loans/**
           filters:

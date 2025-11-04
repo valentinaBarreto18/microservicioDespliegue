@@ -97,15 +97,11 @@ services:
     envVars:
       - key: SERVER_PORT
         value: 8080
+      - key: SPRING_PROFILES_ACTIVE
+        value: render
       - key: INVENTORY_SERVICE_URL
-        fromService:
-          type: web
-          name: biblioteca-inventory-service
-          property: host
+        value: https://biblioteca-inventory-service.onrender.com
       - key: LOAN_SERVICE_URL
-        fromService:
-          type: web
-          name: biblioteca-loan-service
-          property: host
+        value: https://biblioteca-loan-service.onrender.com
     healthCheckPath: /actuator/health
 
