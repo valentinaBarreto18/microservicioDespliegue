@@ -1,44 +1,23 @@
 version: '3.8'
 
 services:
-  # Base de datos PostgreSQL para Inventory Service
-  postgres-inventory:
+  # Base de datos PostgreSQL compartida
+  postgres-biblioteca:
     image: postgres:15-alpine
-    container_name: biblioteca-postgres-inventory
+    container_name: biblioteca-postgres
     environment:
-      POSTGRES_DB: inventory_db
-      POSTGRES_USER: inventory_user
-      POSTGRES_PASSWORD: inventory_pass
+      POSTGRES_DB: biblioteca_db
+      POSTGRES_USER: biblioteca_user
+      POSTGRES_PASSWORD: biblioteca_pass
     ports:
       - "5432:5432"
     volumes:
-      - postgres-inventory-data:/var/lib/postgresql/data
-      - ./database/init-inventory-db.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres-biblioteca-data:/var/lib/postgresql/data
+      - ./database/init-biblioteca-db.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - biblioteca-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U inventory_user -d inventory_db"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  # Base de datos PostgreSQL para Loan Service
-  postgres-loan:
-    image: postgres:15-alpine
-    container_name: biblioteca-postgres-loan
-    environment:
-      POSTGRES_DB: loan_db
-      POSTGRES_USER: loan_user
-      POSTGRES_PASSWORD: loan_pass
-    ports:
-      - "5433:5432"
-    volumes:
-      - postgres-loan-data:/var/lib/postgresql/data
-      - ./database/init-loan-db.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - biblioteca-network
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U loan_user -d loan_db"]
+      test: ["CMD-SHELL", "pg_isready -U biblioteca_user -d biblioteca_db"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -52,11 +31,11 @@ services:
     ports:
       - "8081:8081"
     environment:
-      SPRING_R2DBC_URL: r2dbc:postgresql://postgres-inventory:5432/inventory_db
-      SPRING_R2DBC_USERNAME: inventory_user
-      SPRING_R2DBC_PASSWORD: inventory_pass
+      SPRING_R2DBC_URL: r2dbc:postgresql://postgres-biblioteca:5432/biblioteca_db
+      SPRING_R2DBC_USERNAME: biblioteca_user
+      SPRING_R2DBC_PASSWORD: biblioteca_pass
     depends_on:
-      postgres-inventory:
+      postgres-biblioteca:
         condition: service_healthy
     networks:
       - biblioteca-network
@@ -77,11 +56,11 @@ services:
     ports:
       - "8082:8082"
     environment:
-      SPRING_R2DBC_URL: r2dbc:postgresql://postgres-loan:5432/loan_db
-      SPRING_R2DBC_USERNAME: loan_user
-      SPRING_R2DBC_PASSWORD: loan_pass
+      SPRING_R2DBC_URL: r2dbc:postgresql://postgres-biblioteca:5432/biblioteca_db
+      SPRING_R2DBC_USERNAME: biblioteca_user
+      SPRING_R2DBC_PASSWORD: biblioteca_pass
     depends_on:
-      postgres-loan:
+      postgres-biblioteca:
         condition: service_healthy
       inventory-service:
         condition: service_healthy
@@ -119,9 +98,7 @@ services:
       start_period: 60s
 
 volumes:
-  postgres-inventory-data:
-    driver: local
-  postgres-loan-data:
+  postgres-biblioteca-data:
     driver: local
 
 networks:

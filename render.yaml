@@ -2,18 +2,10 @@
 # Este archivo define toda la infraestructura necesaria
 
 databases:
-  # Base de datos para Inventory Service
-  - name: biblioteca-inventory-db
-    databaseName: inventory_db
-    user: inventory_user
-    plan: free
-    region: oregon
-    postgresMajorVersion: 15
-
-  # Base de datos para Loan Service
-  - name: biblioteca-loan-db
-    databaseName: loan_db
-    user: loan_user
+  # Base de datos compartida para todos los servicios
+  - name: biblioteca-db
+    databaseName: biblioteca_db
+    user: biblioteca_user
     plan: free
     region: oregon
     postgresMajorVersion: 15
@@ -32,19 +24,19 @@ services:
         value: 8081
       - key: SPRING_R2DBC_URL
         fromDatabase:
-          name: biblioteca-inventory-db
+          name: biblioteca-db
           property: connectionString
       - key: SPRING_R2DBC_USERNAME
         fromDatabase:
-          name: biblioteca-inventory-db
+          name: biblioteca-db
           property: user
       - key: SPRING_R2DBC_PASSWORD
         fromDatabase:
-          name: biblioteca-inventory-db
+          name: biblioteca-db
           property: password
       - key: DATABASE_URL
         fromDatabase:
-          name: biblioteca-inventory-db
+          name: biblioteca-db
           property: connectionString
     healthCheckPath: /actuator/health
 
@@ -61,19 +53,19 @@ services:
         value: 8082
       - key: SPRING_R2DBC_URL
         fromDatabase:
-          name: biblioteca-loan-db
+          name: biblioteca-db
           property: connectionString
       - key: SPRING_R2DBC_USERNAME
         fromDatabase:
-          name: biblioteca-loan-db
+          name: biblioteca-db
           property: user
       - key: SPRING_R2DBC_PASSWORD
         fromDatabase:
-          name: biblioteca-loan-db
+          name: biblioteca-db
           property: password
       - key: DATABASE_URL
         fromDatabase:
-          name: biblioteca-loan-db
+          name: biblioteca-db
           property: connectionString
       - key: INVENTORY_SERVICE_URL
         fromService:
