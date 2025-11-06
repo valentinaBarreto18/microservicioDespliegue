@@ -1,6 +1,7 @@
 package com.biblioteca.loan.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 import java.time.LocalDate;
 
@@ -10,12 +11,12 @@ import java.time.LocalDate;
 @Table("loans")
 public record Loan(
     @Id Long id,
-    Long bookId,
-    String userEmail,
-    String userName,
-    LocalDate loanDate,
-    LocalDate dueDate,
-    LocalDate returnDate,
+    @Column("book_id") Long bookId,
+    @Column("user_email") String userEmail,
+    @Column("user_name") String userName,
+    @Column("loan_date") LocalDate loanDate,
+    @Column("due_date") LocalDate dueDate,
+    @Column("return_date") LocalDate returnDate,
     LoanStatus status,
     String notes
 ) {

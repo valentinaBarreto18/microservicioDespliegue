@@ -1,13 +1,13 @@
 {
 	"info": {
-		"_postman_id": "biblioteca-microservices-001",
-		"name": "Biblioteca Microservices - API Gateway (Render)",
-		"description": "Colección para probar los microservicios de Biblioteca desplegados en Render.\n\n⚠️ IMPORTANTE: Si ves \"Response timed out\", aumenta el timeout en Postman:\nSettings → General → Request timeout (ms) → Cambia a 120000",
+		"_postman_id": "biblioteca-direct-services-001",
+		"name": "Biblioteca Microservices - Direct Services (Sin API Gateway)",
+		"description": "Colección para probar los microservicios directamente sin pasar por el API Gateway.\n\n✅ VENTAJA: Evita el rate limiting del API Gateway (error 429)\n\n⚠️ IMPORTANTE: Si ves \"Response timed out\", aumenta el timeout en Postman:\nSettings → General → Request timeout (ms) → Cambia a 120000",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Inventory Service",
+			"name": "Inventory Service (Directo)",
 			"item": [
 				{
 					"name": "Obtener todos los libros",
@@ -15,9 +15,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://biblioteca-api-gateway.onrender.com/api/books",
+							"raw": "https://biblioteca-inventory-service.onrender.com/api/books",
 							"protocol": "https",
-							"host": ["biblioteca-api-gateway", "onrender", "com"],
+							"host": ["biblioteca-inventory-service", "onrender", "com"],
 							"path": ["api", "books"]
 						},
 						"description": "Obtiene la lista completa de libros en el inventario"
@@ -29,9 +29,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://biblioteca-api-gateway.onrender.com/api/books/1",
+							"raw": "https://biblioteca-inventory-service.onrender.com/api/books/1",
 							"protocol": "https",
-							"host": ["biblioteca-api-gateway", "onrender", "com"],
+							"host": ["biblioteca-inventory-service", "onrender", "com"],
 							"path": ["api", "books", "1"]
 						},
 						"description": "Obtiene un libro específico por su ID"
@@ -43,9 +43,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://biblioteca-api-gateway.onrender.com/api/books/isbn/978-0-13-468599-1",
+							"raw": "https://biblioteca-inventory-service.onrender.com/api/books/isbn/978-0-13-468599-1",
 							"protocol": "https",
-							"host": ["biblioteca-api-gateway", "onrender", "com"],
+							"host": ["biblioteca-inventory-service", "onrender", "com"],
 							"path": ["api", "books", "isbn", "978-0-13-468599-1"]
 						},
 						"description": "Busca un libro por su número ISBN"
@@ -57,9 +57,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://biblioteca-api-gateway.onrender.com/api/books/search/author?name=Martin",
+							"raw": "https://biblioteca-inventory-service.onrender.com/api/books/search/author?name=Martin",
 							"protocol": "https",
-							"host": ["biblioteca-api-gateway", "onrender", "com"],
+							"host": ["biblioteca-inventory-service", "onrender", "com"],
 							"path": ["api", "books", "search", "author"],
 							"query": [
 								{
@@ -77,9 +77,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://biblioteca-api-gateway.onrender.com/api/books/search/title?name=Spring",
+							"raw": "https://biblioteca-inventory-service.onrender.com/api/books/search/title?name=Spring",
 							"protocol": "https",
-							"host": ["biblioteca-api-gateway", "onrender", "com"],
+							"host": ["biblioteca-inventory-service", "onrender", "com"],
 							"path": ["api", "books", "search", "title"],
 							"query": [
 								{
@@ -97,9 +97,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://biblioteca-api-gateway.onrender.com/api/books/category/Programación",
+							"raw": "https://biblioteca-inventory-service.onrender.com/api/books/category/Programación",
 							"protocol": "https",
-							"host": ["biblioteca-api-gateway", "onrender", "com"],
+							"host": ["biblioteca-inventory-service", "onrender", "com"],
 							"path": ["api", "books", "category", "Programación"]
 						},
 						"description": "Obtiene libros de una categoría específica"
@@ -111,9 +111,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://biblioteca-api-gateway.onrender.com/api/books/available",
+							"raw": "https://biblioteca-inventory-service.onrender.com/api/books/available",
 							"protocol": "https",
-							"host": ["biblioteca-api-gateway", "onrender", "com"],
+							"host": ["biblioteca-inventory-service", "onrender", "com"],
 							"path": ["api", "books", "available"]
 						},
 						"description": "Obtiene solo los libros que tienen copias disponibles"
@@ -125,9 +125,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://biblioteca-api-gateway.onrender.com/api/books/1/availability",
+							"raw": "https://biblioteca-inventory-service.onrender.com/api/books/1/availability",
 							"protocol": "https",
-							"host": ["biblioteca-api-gateway", "onrender", "com"],
+							"host": ["biblioteca-inventory-service", "onrender", "com"],
 							"path": ["api", "books", "1", "availability"]
 						},
 						"description": "Verifica si un libro específico está disponible"
@@ -148,9 +148,9 @@
 							"raw": "{\n  \"isbn\": \"978-0-13-468599-9\",\n  \"title\": \"Test Driven Development\",\n  \"author\": \"Kent Beck\",\n  \"publisher\": \"Addison-Wesley\",\n  \"publicationYear\": 2002,\n  \"category\": \"Programación\",\n  \"totalCopies\": 3,\n  \"availableCopies\": 3,\n  \"description\": \"Desarrollo guiado por pruebas\"\n}"
 						},
 						"url": {
-							"raw": "https://biblioteca-api-gateway.onrender.com/api/books",
+							"raw": "https://biblioteca-inventory-service.onrender.com/api/books",
 							"protocol": "https",
-							"host": ["biblioteca-api-gateway", "onrender", "com"],
+							"host": ["biblioteca-inventory-service", "onrender", "com"],
 							"path": ["api", "books"]
 						},
 						"description": "Crea un nuevo libro en el inventario"
@@ -171,9 +171,9 @@
 							"raw": "{\n  \"isbn\": \"978-0-13-468599-1\",\n  \"title\": \"Effective Java - Third Edition\",\n  \"author\": \"Joshua Bloch\",\n  \"publisher\": \"Addison-Wesley\",\n  \"publicationYear\": 2018,\n  \"category\": \"Programación\",\n  \"totalCopies\": 6,\n  \"availableCopies\": 6,\n  \"description\": \"Guía completa de mejores prácticas en Java - Actualizado\"\n}"
 						},
 						"url": {
-							"raw": "https://biblioteca-api-gateway.onrender.com/api/books/1",
+							"raw": "https://biblioteca-inventory-service.onrender.com/api/books/1",
 							"protocol": "https",
-							"host": ["biblioteca-api-gateway", "onrender", "com"],
+							"host": ["biblioteca-inventory-service", "onrender", "com"],
 							"path": ["api", "books", "1"]
 						},
 						"description": "Actualiza la información de un libro existente"
@@ -185,9 +185,9 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "https://biblioteca-api-gateway.onrender.com/api/books/11",
+							"raw": "https://biblioteca-inventory-service.onrender.com/api/books/11",
 							"protocol": "https",
-							"host": ["biblioteca-api-gateway", "onrender", "com"],
+							"host": ["biblioteca-inventory-service", "onrender", "com"],
 							"path": ["api", "books", "11"]
 						},
 						"description": "Elimina un libro del inventario"
@@ -199,9 +199,9 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "https://biblioteca-api-gateway.onrender.com/api/books/1/decrement",
+							"raw": "https://biblioteca-inventory-service.onrender.com/api/books/1/decrement",
 							"protocol": "https",
-							"host": ["biblioteca-api-gateway", "onrender", "com"],
+							"host": ["biblioteca-inventory-service", "onrender", "com"],
 							"path": ["api", "books", "1", "decrement"]
 						},
 						"description": "Decrementa las copias disponibles (cuando se presta un libro)"
@@ -213,19 +213,19 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "https://biblioteca-api-gateway.onrender.com/api/books/1/increment",
+							"raw": "https://biblioteca-inventory-service.onrender.com/api/books/1/increment",
 							"protocol": "https",
-							"host": ["biblioteca-api-gateway", "onrender", "com"],
+							"host": ["biblioteca-inventory-service", "onrender", "com"],
 							"path": ["api", "books", "1", "increment"]
 						},
 						"description": "Incrementa las copias disponibles (cuando se devuelve un libro)"
 					}
 				}
 			],
-			"description": "Endpoints del servicio de inventario de libros"
+			"description": "Endpoints del servicio de inventario de libros (acceso directo)"
 		},
 		{
-			"name": "Loan Service",
+			"name": "Loan Service (Directo)",
 			"item": [
 				{
 					"name": "Obtener todos los préstamos",
@@ -233,9 +233,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://biblioteca-api-gateway.onrender.com/api/loans",
+							"raw": "https://biblioteca-loan-service.onrender.com/api/loans",
 							"protocol": "https",
-							"host": ["biblioteca-api-gateway", "onrender", "com"],
+							"host": ["biblioteca-loan-service", "onrender", "com"],
 							"path": ["api", "loans"]
 						},
 						"description": "Obtiene la lista completa de préstamos"
@@ -247,9 +247,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://biblioteca-api-gateway.onrender.com/api/loans/1",
+							"raw": "https://biblioteca-loan-service.onrender.com/api/loans/1",
 							"protocol": "https",
-							"host": ["biblioteca-api-gateway", "onrender", "com"],
+							"host": ["biblioteca-loan-service", "onrender", "com"],
 							"path": ["api", "loans", "1"]
 						},
 						"description": "Obtiene un préstamo específico por su ID"
@@ -261,9 +261,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://biblioteca-api-gateway.onrender.com/api/loans/user/juan.perez@example.com",
+							"raw": "https://biblioteca-loan-service.onrender.com/api/loans/user/juan.perez@example.com",
 							"protocol": "https",
-							"host": ["biblioteca-api-gateway", "onrender", "com"],
+							"host": ["biblioteca-loan-service", "onrender", "com"],
 							"path": ["api", "loans", "user", "juan.perez@example.com"]
 						},
 						"description": "Obtiene todos los préstamos de un usuario específico"
@@ -275,9 +275,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://biblioteca-api-gateway.onrender.com/api/loans/user/juan.perez@example.com/active",
+							"raw": "https://biblioteca-loan-service.onrender.com/api/loans/user/juan.perez@example.com/active",
 							"protocol": "https",
-							"host": ["biblioteca-api-gateway", "onrender", "com"],
+							"host": ["biblioteca-loan-service", "onrender", "com"],
 							"path": ["api", "loans", "user", "juan.perez@example.com", "active"]
 						},
 						"description": "Obtiene los préstamos activos de un usuario"
@@ -289,9 +289,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://biblioteca-api-gateway.onrender.com/api/loans/book/1",
+							"raw": "https://biblioteca-loan-service.onrender.com/api/loans/book/1",
 							"protocol": "https",
-							"host": ["biblioteca-api-gateway", "onrender", "com"],
+							"host": ["biblioteca-loan-service", "onrender", "com"],
 							"path": ["api", "loans", "book", "1"]
 						},
 						"description": "Obtiene el historial de préstamos de un libro"
@@ -303,9 +303,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://biblioteca-api-gateway.onrender.com/api/loans/status/ACTIVE",
+							"raw": "https://biblioteca-loan-service.onrender.com/api/loans/status/ACTIVE",
 							"protocol": "https",
-							"host": ["biblioteca-api-gateway", "onrender", "com"],
+							"host": ["biblioteca-loan-service", "onrender", "com"],
 							"path": ["api", "loans", "status", "ACTIVE"]
 						},
 						"description": "Obtiene préstamos filtrados por estado (ACTIVE, RETURNED, OVERDUE, CANCELLED)"
@@ -317,9 +317,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://biblioteca-api-gateway.onrender.com/api/loans/overdue",
+							"raw": "https://biblioteca-loan-service.onrender.com/api/loans/overdue",
 							"protocol": "https",
-							"host": ["biblioteca-api-gateway", "onrender", "com"],
+							"host": ["biblioteca-loan-service", "onrender", "com"],
 							"path": ["api", "loans", "overdue"]
 						},
 						"description": "Obtiene todos los préstamos vencidos"
@@ -340,9 +340,9 @@
 							"raw": "{\n  \"bookId\": 7,\n  \"userEmail\": \"lucia.rodriguez@example.com\",\n  \"userName\": \"Lucía Rodríguez\",\n  \"dueDate\": \"2025-11-18\",\n  \"notes\": \"Préstamo de prueba desde Postman\"\n}"
 						},
 						"url": {
-							"raw": "https://biblioteca-api-gateway.onrender.com/api/loans",
+							"raw": "https://biblioteca-loan-service.onrender.com/api/loans",
 							"protocol": "https",
-							"host": ["biblioteca-api-gateway", "onrender", "com"],
+							"host": ["biblioteca-loan-service", "onrender", "com"],
 							"path": ["api", "loans"]
 						},
 						"description": "Crea un nuevo préstamo de libro"
@@ -354,9 +354,9 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "https://biblioteca-api-gateway.onrender.com/api/loans/1/return",
+							"raw": "https://biblioteca-loan-service.onrender.com/api/loans/1/return",
 							"protocol": "https",
-							"host": ["biblioteca-api-gateway", "onrender", "com"],
+							"host": ["biblioteca-loan-service", "onrender", "com"],
 							"path": ["api", "loans", "1", "return"]
 						},
 						"description": "Marca un préstamo como devuelto"
@@ -368,9 +368,9 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "https://biblioteca-api-gateway.onrender.com/api/loans/2/renew?newDueDate=2025-11-25",
+							"raw": "https://biblioteca-loan-service.onrender.com/api/loans/2/renew?newDueDate=2025-11-25",
 							"protocol": "https",
-							"host": ["biblioteca-api-gateway", "onrender", "com"],
+							"host": ["biblioteca-loan-service", "onrender", "com"],
 							"path": ["api", "loans", "2", "renew"],
 							"query": [
 								{
@@ -388,9 +388,9 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "https://biblioteca-api-gateway.onrender.com/api/loans/4/cancel",
+							"raw": "https://biblioteca-loan-service.onrender.com/api/loans/4/cancel",
 							"protocol": "https",
-							"host": ["biblioteca-api-gateway", "onrender", "com"],
+							"host": ["biblioteca-loan-service", "onrender", "com"],
 							"path": ["api", "loans", "4", "cancel"]
 						},
 						"description": "Cancela un préstamo activo"
@@ -402,34 +402,20 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "https://biblioteca-api-gateway.onrender.com/api/loans/update-overdue",
+							"raw": "https://biblioteca-loan-service.onrender.com/api/loans/update-overdue",
 							"protocol": "https",
-							"host": ["biblioteca-api-gateway", "onrender", "com"],
+							"host": ["biblioteca-loan-service", "onrender", "com"],
 							"path": ["api", "loans", "update-overdue"]
 						},
 						"description": "Actualiza el estado de todos los préstamos vencidos"
 					}
 				}
 			],
-			"description": "Endpoints del servicio de préstamos"
+			"description": "Endpoints del servicio de préstamos (acceso directo)"
 		},
 		{
-			"name": "Health Checks",
+			"name": "Health Checks (Directos)",
 			"item": [
-				{
-					"name": "Health - API Gateway",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://biblioteca-api-gateway.onrender.com/actuator/health",
-							"protocol": "https",
-							"host": ["biblioteca-api-gateway", "onrender", "com"],
-							"path": ["actuator", "health"]
-						},
-						"description": "Verifica el estado de salud del API Gateway"
-					}
-				},
 				{
 					"name": "Health - Inventory Service",
 					"request": {
@@ -441,7 +427,7 @@
 							"host": ["biblioteca-inventory-service", "onrender", "com"],
 							"path": ["actuator", "health"]
 						},
-						"description": "Verifica el estado de salud del servicio de inventario (directo)"
+						"description": "Verifica el estado de salud del servicio de inventario"
 					}
 				},
 				{
@@ -455,19 +441,14 @@
 							"host": ["biblioteca-loan-service", "onrender", "com"],
 							"path": ["actuator", "health"]
 						},
-						"description": "Verifica el estado de salud del servicio de préstamos (directo)"
+						"description": "Verifica el estado de salud del servicio de préstamos"
 					}
 				}
 			],
-			"description": "Endpoints de verificación de salud de los servicios"
+			"description": "Endpoints de verificación de salud de los servicios (acceso directo)"
 		}
 	],
 	"variable": [
-		{
-			"key": "gateway_url",
-			"value": "https://biblioteca-api-gateway.onrender.com",
-			"type": "string"
-		},
 		{
 			"key": "inventory_service_url",
 			"value": "https://biblioteca-inventory-service.onrender.com",

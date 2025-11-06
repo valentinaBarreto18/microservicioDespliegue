@@ -1,6 +1,7 @@
 package com.biblioteca.inventory.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
@@ -13,10 +14,10 @@ public record Book(
     String title,
     String author,
     String publisher,
-    Integer publicationYear,
+    @Column("publication_year") Integer publicationYear,
     String category,
-    Integer totalCopies,
-    Integer availableCopies,
+    @Column("total_copies") Integer totalCopies,
+    @Column("available_copies") Integer availableCopies,
     String description
 ) {
     // Constructor para creación de nuevos libros (sin ID)
