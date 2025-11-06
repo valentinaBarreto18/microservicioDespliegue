@@ -97,27 +97,42 @@ public class BookService {
         
         // Verificar si ya existe un libro con ese ISBN
         return bookRepository.findByIsbn(request.isbn())
-                .flatMap(existing -> Mono.<BookResponse>error(
-                    new RuntimeException("Ya existe un libro con ISBN: " + request.isbn())
-                ))
+                .flatMap(existing -> {
+                    log.warn("Intento de crear libro con ISBN duplicado: {}", request.isbn());
+                    return Mono.<BookResponse>error(
+                        new RuntimeException("Ya existe un libro con ISBN: " + request.isbn())
+                    );
+                })
                 .switchIfEmpty(
                     Mono.defer(() -> {
-                        Book newBook = new Book(
-                            request.isbn(),
-                            request.title(),
-                            request.author(),
-                            request.publisher(),
-                            request.publicationYear(),
-                            request.category(),
-                            request.totalCopies(),
-                            request.availableCopies(),
-                            request.description()
-                        );
-                        return bookRepository.save(newBook)
-                                .map(BookResponse::fromBook)
-                                .doOnSuccess(book -> log.info("Libro creado exitosamente: {}", book.id()));
+                        try {
+                            log.info("Creando libro con datos: ISBN={}, Title={}, Author={}", 
+                                request.isbn(), request.title(), request.author());
+                            
+                            Book newBook = new Book(
+                                request.isbn(),
+                                request.title(),
+                                request.author(),
+                                request.publisher(),
+                                request.publicationYear(),
+                                request.category(),
+                                request.totalCopies(),
+                                request.availableCopies(),
+                                request.description()
+                            );
+                            
+                            log.info("Libro creado en memoria, guardando en base de datos...");
+                            return bookRepository.save(newBook)
+                                    .map(BookResponse::fromBook)
+                                    .doOnSuccess(book -> log.info("Libro creado exitosamente con ID: {}", book.id()))
+                                    .doOnError(error -> log.error("Error al guardar libro: {}", error.getMessage(), error));
+                        } catch (Exception e) {
+                            log.error("Error al crear libro: {}", e.getMessage(), e);
+                            return Mono.error(e);
+                        }
                     })
-                );
+                )
+                .doOnError(error -> log.error("Error en createBook: {}", error.getMessage(), error));
     }
 
     /**
